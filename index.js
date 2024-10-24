@@ -1,12 +1,19 @@
 const express = require("express");
 const app = express();
+require("dotenv").config();
+const cors = require("cors");
 const port = process.env.PORT || 5000;
+const { MongoClient, ServerApiVersion } = require("mongodb");
 
+const corsOptions = {
+  origin: ["http://localhost:5173", "http://localhost:5174"],
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
-const uri =
-  "mongodb+srv://EduSync-Courses:IUFqeyVv8IUmZuTI@cluster0.2xcsswz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = `mongodb+srv://${process.env.SKILL_SPHERE_USER_NAME}:${process.env.SKILL_SPHERE_PASSWORD}@cluster0.2xcsswz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -19,6 +26,16 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+    const dbCollection = client.db("skillsphereDB");
+    const usersCollection = dbCollection.collection("users");
+
+    // User's Saved Data in DB
+    app.post("/skillsphere/api/v1/users", async (req, res) => {
+      const body = req.body;
+      const result = await usersCollection.insertOne(body);
+      res.send(result);
+    });
+
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
