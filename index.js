@@ -3,7 +3,7 @@ const app = express();
 require("dotenv").config();
 const cors = require("cors");
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const corsOptions = {
   origin: ["http://localhost:5173", "http://localhost:5174"],
@@ -40,6 +40,14 @@ async function run() {
     // Get Courses All Data
     app.get("/skillsphere/api/v1/courses", async (req, res) => {
       const cursor = await coursesCollection.find().toArray();
+      res.send(cursor);
+    });
+
+    // Get specific course Data
+    app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const cursor = await coursesCollection.findOne(query);
       res.send(cursor);
     });
 
