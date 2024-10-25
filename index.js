@@ -28,12 +28,19 @@ async function run() {
   try {
     const dbCollection = client.db("skillsphereDB");
     const usersCollection = dbCollection.collection("users");
+    const coursesCollection = dbCollection.collection("courses");
 
     // User's Saved Data in DB
     app.post("/skillsphere/api/v1/users", async (req, res) => {
       const body = req.body;
       const result = await usersCollection.insertOne(body);
       res.send(result);
+    });
+
+    // Get Courses All Data
+    app.get("/skillsphere/api/v1/courses", async (req, res) => {
+      const cursor = await coursesCollection.find().toArray();
+      res.send(cursor);
     });
 
     // Connect the client to the server	(optional starting in v4.7)
