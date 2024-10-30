@@ -29,6 +29,7 @@ async function run() {
     const dbCollection = client.db("skillsphereDB");
     const usersCollection = dbCollection.collection("users");
     const coursesCollection = dbCollection.collection("courses");
+    const purchasesCollection = dbCollection.collection("purchases");
 
     // User's Saved Data in DB
     app.post("/skillsphere/api/v1/users", async (req, res) => {
@@ -49,6 +50,13 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const cursor = await coursesCollection.findOne(query);
       res.send(cursor);
+    });
+
+    // Specific User's Purchases Courses Data Saved in DB
+    app.post("/skillsphere/api/v1/purchases", async (req, res) => {
+      const body = req.body;
+      const result = await purchasesCollection.insertOne(body);
+      res.send(result);
     });
 
     // Connect the client to the server	(optional starting in v4.7)
