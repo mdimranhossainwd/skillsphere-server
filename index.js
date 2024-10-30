@@ -59,13 +59,13 @@ async function run() {
       res.send(result);
     });
 
-    // // Specific User's Purchases Courses Data Deleted in DB
-    // app.delete("/skillsphere/api/v1/purchases/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: new ObjectId(id) };
-    //   const cursor = await purchasesCollection.deleteOne(query);
-    //   res.send(cursor);
-    // });
+    // Specific User's Purchases Courses Data Deleted in DB
+    app.delete("/skillsphere/api/v1/purchases/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const cursor = await purchasesCollection.deleteOne(query);
+      res.send(cursor);
+    });
 
     // Get User's Purchases Courses Data
     app.get("/skillsphere/api/v1/purchases", async (req, res) => {
