@@ -29,7 +29,7 @@ async function run() {
     const dbCollection = client.db("skillsphereDB");
     const usersCollection = dbCollection.collection("users");
     const coursesCollection = dbCollection.collection("courses");
-    const purchasesCollection = dbCollection.collection("purchases");
+    const cartsCollection = dbCollection.collection("carts");
 
     // User's Saved Data in DB
     app.post("/skillsphere/api/v1/users", async (req, res) => {
@@ -48,31 +48,31 @@ async function run() {
     app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
-      const cursor = await coursesCollection.findOne(query);
-      res.send(cursor);
+      const result = await coursesCollection.findOne(query);
+      res.send(result);
     });
 
     // Specific User's Purchases Courses Data Saved in DB
-    app.post("/skillsphere/api/v1/purchases", async (req, res) => {
+    app.post("/skillsphere/api/v1/carts", async (req, res) => {
       const body = req.body;
-      const result = await purchasesCollection.insertOne(body);
+      const result = await cartsCollection.insertOne(body);
       res.send(result);
     });
 
     // Specific User's Purchases Courses Data Deleted in DB
-    app.delete("/skillsphere/api/v1/purchases/:id", async (req, res) => {
+    app.delete("/skillsphere/api/v1/carts/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
-      const cursor = await purchasesCollection.deleteOne(query);
+      const cursor = await cartsCollection.deleteOne(query);
       res.send(cursor);
     });
 
     // Get Specific Email User's Purchases Courses Data
-    app.get("/skillsphere/api/v1/purchases", async (req, res) => {
+    app.get("/skillsphere/api/v1/carts", async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
-      const cursor = await purchasesCollection.find(query).toArray();
-      res.send(cursor);
+      const result = await cartsCollection.find(query).toArray();
+      res.send(result);
     });
 
     // Connect the client to the server	(optional starting in v4.7)
