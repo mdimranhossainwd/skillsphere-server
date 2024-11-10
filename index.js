@@ -38,6 +38,13 @@ async function run() {
       res.send(result);
     });
 
+    // Get User's Role Data
+    app.get("/skillsphere/api/v1/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const cursor = await coursesCollection.findOne({ email });
+      res.send(cursor);
+    });
+
     // Get Courses All Data
     app.get("/skillsphere/api/v1/courses", async (req, res) => {
       const cursor = await coursesCollection.find().toArray();
