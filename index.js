@@ -46,6 +46,12 @@ async function run() {
     });
 
     // Get Courses All Data
+    app.get("/skillsphere/api/v1/users", async (req, res) => {
+      const cursor = await usersCollection.find().toArray();
+      res.send(cursor);
+    });
+
+    // Get Courses All Data
     app.get("/skillsphere/api/v1/courses", async (req, res) => {
       const cursor = await coursesCollection.find().toArray();
       res.send(cursor);
