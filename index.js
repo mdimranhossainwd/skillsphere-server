@@ -41,7 +41,7 @@ async function run() {
     // Get User's Role Data
     app.get("/skillsphere/api/v1/users/:email", async (req, res) => {
       const email = req.params.email;
-      const cursor = await coursesCollection.findOne({ email });
+      const cursor = await usersCollection.findOne({ email });
       res.send(cursor);
     });
 
