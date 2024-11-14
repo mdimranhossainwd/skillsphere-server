@@ -54,6 +54,11 @@ async function run() {
     });
 
     //
+    app.post("/skillsphere/api/v1/payment", async (req, res) => {
+      const body = req.body;
+      const result = await paymentsCollection.insertOne(body);
+      res.send(result);
+    });
 
     // User's Saved Data in DB
     app.post("/skillsphere/api/v1/users", async (req, res) => {
