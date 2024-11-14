@@ -60,6 +60,13 @@ async function run() {
       res.send(result);
     });
 
+    // Get all Payments Info
+
+    app.get("/skillsphere/api/v1/payment", async (req, res) => {
+      const cursor = await paymentsCollection.find().toArray();
+      res.send(cursor);
+    });
+
     // User's Saved Data in DB
     app.post("/skillsphere/api/v1/users", async (req, res) => {
       const body = req.body;
