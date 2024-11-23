@@ -32,6 +32,7 @@ async function run() {
     const coursesCollection = dbCollection.collection("courses");
     const cartsCollection = dbCollection.collection("carts");
     const paymentsCollection = dbCollection.collection("payments");
+    const instructorCoursesCollection = dbCollection.collection("instructor");
 
     // Payment post method
     app.post("/skillsphere/api/v1/create-payment-intent", async (req, res) => {
@@ -51,6 +52,13 @@ async function run() {
         console.error("Error creating payment intent:", error);
         res.status(500).send({ error: "Payment creation failed" });
       }
+    });
+
+    // Instructor Added his own courses data
+    app.post("/skillsphere/api/v1/instructor-course", async (req, res) => {
+      const body = req.body;
+      const result = await instructorCoursesCollection.insertOne(body);
+      res.send(result);
     });
 
     //
