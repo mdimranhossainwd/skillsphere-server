@@ -61,6 +61,12 @@ async function run() {
       res.send(result);
     });
 
+    // Get Instructor Added his own courses data
+    app.get("/skillsphere/api/v1/instructor-course", async (req, res) => {
+      const cursor = await instructorCoursesCollection.find().toArray();
+      res.send(cursor);
+    });
+
     //
     app.post("/skillsphere/api/v1/payment", async (req, res) => {
       const body = req.body;
