@@ -70,7 +70,7 @@ async function run() {
     });
 
     // Get Instructor Added his own courses data
-    app.get("/skillsphere/api/v1/instructor-course", async (req, res) => {
+    app.get("/skillsphere/api/v1/pending-course", async (req, res) => {
       const cursor = await instructorCoursesCollection.find().toArray();
       res.send(cursor);
     });
