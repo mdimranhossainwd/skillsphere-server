@@ -61,6 +61,14 @@ async function run() {
       res.send(result);
     });
 
+    // Get Specific Email User's Purchases Courses Data
+    app.get("/skillsphere/api/v1/instructor-own-course", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const result = await instructorCoursesCollection.find(query).toArray();
+      res.send(result);
+    });
+
     // Get Instructor Added his own courses data
     app.get("/skillsphere/api/v1/instructor-course", async (req, res) => {
       const cursor = await instructorCoursesCollection.find().toArray();
