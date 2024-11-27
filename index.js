@@ -75,6 +75,21 @@ async function run() {
       res.send(cursor);
     });
 
+    // Update a product status
+    app.patch("/skillsphere/api/v1/pending-course/:id", async (req, res) => {
+      const id = req.params.id;
+      const status = req.body;
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: status,
+      };
+      const result = await instructorCoursesCollection.updateOne(
+        query,
+        updateDoc
+      );
+      res.send(result);
+    });
+
     //
     app.post("/skillsphere/api/v1/payment", async (req, res) => {
       const body = req.body;
