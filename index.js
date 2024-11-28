@@ -118,6 +118,18 @@ async function run() {
       res.send(cursor);
     });
 
+    // User's Role changes
+    app.patch("/skillsphere/api/v1/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const role = req.body;
+      const query = { _id: new ObjectId(id) };
+      const updateRole = {
+        $set: role,
+      };
+      const result = await usersCollection.updateOne(query, updateRole);
+      res.send(result);
+    });
+
     // Get Courses All Data
     app.get("/skillsphere/api/v1/users", async (req, res) => {
       const cursor = await usersCollection.find().toArray();
