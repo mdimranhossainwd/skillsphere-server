@@ -118,6 +118,14 @@ async function run() {
       res.send(cursor);
     });
 
+    // Delete specific user's
+    app.delete("/skillsphere/api/v1/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const cursor = await usersCollection.deleteOne(query);
+      res.send(cursor);
+    });
+
     // User's Role changes
     app.patch("/skillsphere/api/v1/users/:id", async (req, res) => {
       const id = req.params.id;
