@@ -98,9 +98,10 @@ async function run() {
     });
 
     // Get all Payments Info
-
     app.get("/skillsphere/api/v1/payment", async (req, res) => {
-      const cursor = await paymentsCollection.find().toArray();
+      const email = req.query.email;
+      const query = { email: email };
+      const cursor = await paymentsCollection.find(query).toArray();
       res.send(cursor);
     });
 
