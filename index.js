@@ -69,6 +69,14 @@ async function run() {
       res.send(result);
     });
 
+    // Get Only Acceptable Courses Data
+    app.get("/skillsphere/api/v1/accepted-course", async (req, res) => {
+      const cursor = await instructorCoursesCollection
+        .find({ status: "Accepted" })
+        .toArray();
+      res.send(cursor);
+    });
+
     // Get Instructor Added his own courses data
     app.get("/skillsphere/api/v1/pending-course", async (req, res) => {
       const cursor = await instructorCoursesCollection.find().toArray();
