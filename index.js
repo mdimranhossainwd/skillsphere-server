@@ -69,6 +69,14 @@ async function run() {
       res.send(result);
     });
 
+    // Get specific course Data
+    app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await instructorCoursesCollection.findOne(query);
+      res.send(result);
+    });
+
     // Get Only Acceptable Courses Data
     app.get("/skillsphere/api/v1/accepted-course", async (req, res) => {
       const cursor = await instructorCoursesCollection
