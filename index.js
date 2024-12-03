@@ -69,6 +69,17 @@ async function run() {
       res.send(result);
     });
 
+    // Delete a Instructor on his course
+    app.delete(
+      "/skillsphere/api/v1/instructor-own-course/:id",
+      async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
+        const cursor = await instructorCoursesCollection.deleteOne(query);
+        res.send(cursor);
+      }
+    );
+
     // Get specific course Data
     app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
       const id = req.params.id;
