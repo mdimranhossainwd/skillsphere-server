@@ -217,6 +217,14 @@ async function run() {
       res.send(result);
     });
 
+    // instructor Add his own assainments
+    // Instructor Added his own courses data
+    app.post("/skillsphere/api/v1/assainments", async (req, res) => {
+      const body = req.body;
+      const result = await assainmentsCollection.insertOne(body);
+      res.send(result);
+    });
+
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
