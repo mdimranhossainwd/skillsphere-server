@@ -219,7 +219,7 @@ async function run() {
     });
 
     // instructor Add his own assainments
-    app.post("/skillsphere/api/v1/assainments", async (req, res) => {
+    app.post("/skillsphere/api/v1/add-assainments", async (req, res) => {
       const body = req.body;
       const result = await assainmentsCollection.insertOne(body);
       res.send(result);
