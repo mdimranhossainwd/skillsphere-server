@@ -33,6 +33,7 @@ async function run() {
     const cartsCollection = dbCollection.collection("carts");
     const paymentsCollection = dbCollection.collection("payments");
     const instructorCoursesCollection = dbCollection.collection("instructor");
+    const assainmentsCollection = dbCollection.collection("assainments");
 
     // Payment post method
     app.post("/skillsphere/api/v1/create-payment-intent", async (req, res) => {
@@ -218,7 +219,6 @@ async function run() {
     });
 
     // instructor Add his own assainments
-    // Instructor Added his own courses data
     app.post("/skillsphere/api/v1/assainments", async (req, res) => {
       const body = req.body;
       const result = await assainmentsCollection.insertOne(body);
