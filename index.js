@@ -35,6 +35,47 @@ async function run() {
     const instructorCoursesCollection = dbCollection.collection("instructor");
     const assainmentsCollection = dbCollection.collection("assainments");
 
+    // Get specific course Data
+    // app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) };
+    //   const result = await coursesCollection.findOne(query);
+    //   res.send(result);
+    // });
+
+    // // Get specific course Data
+    // app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) };
+    //   const result = await instructorCoursesCollection.findOne(query);
+    //   res.send(result);
+    // });
+
+    app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+
+      try {
+        let result = await coursesCollection.findOne(query);
+        if (!result) {
+          result = await instructorCoursesCollection.findOne(query);
+        }
+
+        if (!result) {
+          return res
+            .status(404)
+            .send({ error: "Course not found in either collection" });
+        }
+
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({
+          error: "Error fetching course data",
+          details: error.message,
+        });
+      }
+    });
+
     // Payment post method
     app.post("/skillsphere/api/v1/create-payment-intent", async (req, res) => {
       const { price } = req.body;
@@ -87,14 +128,6 @@ async function run() {
         res.send(cursor);
       }
     );
-
-    // Get specific course Data
-    app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await instructorCoursesCollection.findOne(query);
-      res.send(result);
-    });
 
     // Get Only Acceptable Courses Data
     app.get("/skillsphere/api/v1/accepted-course", async (req, res) => {
@@ -184,14 +217,6 @@ async function run() {
     app.get("/skillsphere/api/v1/courses", async (req, res) => {
       const cursor = await coursesCollection.find().toArray();
       res.send(cursor);
-    });
-
-    // Get specific course Data
-    app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await coursesCollection.findOne(query);
-      res.send(result);
     });
 
     // Specific User's Purchases Courses Data Saved in DB
