@@ -35,22 +35,6 @@ async function run() {
     const instructorCoursesCollection = dbCollection.collection("instructor");
     const assainmentsCollection = dbCollection.collection("assainments");
 
-    // Get specific course Data
-    // app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: new ObjectId(id) };
-    //   const result = await coursesCollection.findOne(query);
-    //   res.send(result);
-    // });
-
-    // // Get specific course Data
-    // app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: new ObjectId(id) };
-    //   const result = await instructorCoursesCollection.findOne(query);
-    //   res.send(result);
-    // });
-
     app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -158,7 +142,27 @@ async function run() {
       res.send(result);
     });
 
-    //
+    // Update a Product On his course
+    app.put(
+      "/skillsphere/api/v1/instructor-own-course/:id",
+      async (req, res) => {
+        const id = req.params.id;
+        const handleAddCourse = req.body;
+        const query = { _id: new ObjectId(id) };
+        const updateCourse = {
+          $set: {
+            ...handleAddCourse,
+          },
+        };
+        const result = await instructorCoursesCollection.updateOne(
+          query,
+          updateCourse
+        );
+        res.send(result);
+      }
+    );
+
+    // Payment post method
     app.post("/skillsphere/api/v1/payment", async (req, res) => {
       const body = req.body;
       const result = await paymentsCollection.insertOne(body);
