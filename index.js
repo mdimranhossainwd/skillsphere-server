@@ -227,8 +227,21 @@ async function run() {
 
     // Get Courses All Data
     app.get("/skillsphere/api/v1/users", async (req, res) => {
-      const cursor = await usersCollection.find().toArray();
+      const size = parseInt(req.query.size);
+      const pages = parseInt(req.query.pages) - 1;
+
+      const cursor = await usersCollection
+        .find()
+        .skip(pages * size)
+        .limit(size)
+        .toArray();
       res.send(cursor);
+    });
+
+    app.get("/skillsphere/api/v1/users-count", async (req, res) => {
+      const filter = req.role; // Status check
+      const count = await usersCollection.countDocuments(filter);
+      res.send({ count });
     });
 
     // Get Courses All Data
