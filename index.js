@@ -90,8 +90,22 @@ async function run() {
     // Get Instructor all courses data
 
     app.get("/skillsphere/api/v1/created-all-course", async (req, res) => {
-      const cursor = await instructorCoursesCollection.find().toArray();
+      const size = parseInt(req.query.size);
+      const pages = parseInt(req.query.pages) - 1;
+
+      const cursor = await instructorCoursesCollection
+        .find()
+        .skip(pages * size)
+        .limit(size)
+        .toArray();
       res.send(cursor);
+    });
+
+    app.get("/skillsphere/api/v1/products-count", async (req, res) => {
+      const search = req.query.search;
+      const filter = req.status; // Status check
+      const count = await instructorCoursesCollection.countDocuments(filter);
+      res.send({ count });
     });
 
     // Get Specific Email User's Purchases Courses Data
