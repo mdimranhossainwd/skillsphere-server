@@ -296,6 +296,12 @@ async function run() {
       res.send(result);
     });
 
+    // Get all support Info
+    app.get("/skillsphere/api/v1/support", async (req, res) => {
+      const cursor = await supportsCollection.find().toArray();
+      res.send(cursor);
+    });
+
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
