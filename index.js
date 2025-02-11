@@ -34,6 +34,7 @@ async function run() {
     const paymentsCollection = dbCollection.collection("payments");
     const instructorCoursesCollection = dbCollection.collection("instructor");
     const assainmentsCollection = dbCollection.collection("assainments");
+    const supportsCollection = dbCollection.collection("supports");
 
     app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
       const id = req.params.id;
@@ -285,6 +286,13 @@ async function run() {
     app.post("/skillsphere/api/v1/add-assainments", async (req, res) => {
       const body = req.body;
       const result = await assainmentsCollection.insertOne(body);
+      res.send(result);
+    });
+
+    // support post method
+    app.post("/skillsphere/api/v1/support", async (req, res) => {
+      const body = req.body;
+      const result = await supportsCollection.insertOne(body);
       res.send(result);
     });
 
