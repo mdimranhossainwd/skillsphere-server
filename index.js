@@ -302,6 +302,18 @@ async function run() {
       res.send(cursor);
     });
 
+    // Support Info status Changes
+    app.patch("/skillsphere/api/v1/support/:id", async (req, res) => {
+      const id = req.params.id;
+      const status = req.body;
+      const query = { _id: new ObjectId(id) };
+      const updateStatus = {
+        $set: status,
+      };
+      const result = await supportsCollection.updateOne(query, updateStatus);
+      res.send(result);
+    });
+
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
