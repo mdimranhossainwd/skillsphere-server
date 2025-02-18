@@ -302,6 +302,14 @@ async function run() {
       res.send(cursor);
     });
 
+    // Get Specific Email User's support Info
+    app.get("/skillsphere/api/v1/supports", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const cursor = await supportsCollection.find(query).toArray();
+      res.send(cursor);
+    });
+
     // Support Info status Changes
     app.patch("/skillsphere/api/v1/support/:id", async (req, res) => {
       const id = req.params.id;
