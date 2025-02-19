@@ -9,7 +9,11 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const stripe = require("stripe")(process.env.SKILL_SPHERE_SK_TEST_KEY);
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://localhost:5174"],
+  origin: [
+    "http://localhost:5173",
+    "https://edu-sync-90d14.web.app",
+    "http://localhost:5174",
+  ],
   credentials: true,
   optionSuccessStatus: 200,
 };
