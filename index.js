@@ -23,18 +23,14 @@ const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) return res.status(401).send({ message: "unauthorized access" });
   if (token) {
-    jwt.verify(
-      token,
-      process.env.VITE_JSON_WEB_TOKEN_SECRET,
-      (err, decoded) => {
-        if (err) {
-          returnres.status(401).send({ status: "unauthorized access" });
-        }
-        console.log(decoded);
-        req.user = decoded;
-        next();
+    jwt.verify(token, process.env.SKILL_SPHERE_JWT_TOKEN, (err, decoded) => {
+      if (err) {
+        returnres.status(401).send({ status: "unauthorized access" });
       }
-    );
+      console.log(decoded);
+      req.user = decoded;
+      next();
+    });
   }
 };
 
@@ -57,6 +53,32 @@ async function run() {
     const instructorCoursesCollection = dbCollection.collection("instructor");
     const assainmentsCollection = dbCollection.collection("assainments");
     const supportsCollection = dbCollection.collection("supports");
+
+    // JWT Generated
+    app.post("/skillsphere/api/v1/jwt", async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.SKILL_SPHERE_JWT_TOKEN, {
+        expiresIn: "14d",
+      });
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          samesite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        })
+        .send({ success: true });
+    });
+
+    app.get("/skillsphere/api/v1/logout", async (req, res) => {
+      res
+        .cookie("token", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          samesite: process.env.NODE_ENV === "production" ? "none" : "strict",
+          maxAge: 0,
+        })
+        .send({ success: true });
+    });
 
     app.get("/skillsphere/api/v1/courses/:id", async (req, res) => {
       const id = req.params.id;
