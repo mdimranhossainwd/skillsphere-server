@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const cors = require("cors");
 const port = process.env.PORT || 5000;
@@ -13,8 +15,28 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
 const uri = `mongodb+srv://${process.env.SKILL_SPHERE_USER_NAME}:${process.env.SKILL_SPHERE_PASSWORD}@cluster0.2xcsswz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+
+const verifyToken = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) return res.status(401).send({ message: "unauthorized access" });
+  if (token) {
+    jwt.verify(
+      token,
+      process.env.VITE_JSON_WEB_TOKEN_SECRET,
+      (err, decoded) => {
+        if (err) {
+          returnres.status(401).send({ status: "unauthorized access" });
+        }
+        console.log(decoded);
+        req.user = decoded;
+        next();
+      }
+    );
+  }
+};
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
