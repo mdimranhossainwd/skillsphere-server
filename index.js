@@ -252,15 +252,11 @@ async function run() {
     });
 
     // Get User's Role Data
-    app.get(
-      "/skillsphere/api/v1/users/:email",
-      verifyToken,
-      async (req, res) => {
-        const email = req.params.email;
-        const cursor = await usersCollection.findOne({ email });
-        res.send(cursor);
-      }
-    );
+    app.get("/skillsphere/api/v1/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const cursor = await usersCollection.findOne({ email });
+      res.send(cursor);
+    });
 
     // Delete specific user's
     app.delete("/skillsphere/api/v1/users/:id", async (req, res) => {
