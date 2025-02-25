@@ -237,7 +237,7 @@ async function run() {
     });
 
     // Get all Payments Info
-    app.get("/skillsphere/api/v1/payment", verifyToken, async (req, res) => {
+    app.get("/skillsphere/api/v1/payment", async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
       const cursor = await paymentsCollection.find(query).toArray();
@@ -323,7 +323,7 @@ async function run() {
     });
 
     // Get Specific Email User's Purchases Courses Data
-    app.get("/skillsphere/api/v1/carts", verifyToken, async (req, res) => {
+    app.get("/skillsphere/api/v1/carts", async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
       const result = await cartsCollection.find(query).toArray();
@@ -359,7 +359,7 @@ async function run() {
     });
 
     // Get Specific Email User's support Info
-    app.get("/skillsphere/api/v1/supports", verifyToken, async (req, res) => {
+    app.get("/skillsphere/api/v1/supports", async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
       const cursor = await supportsCollection.find(query).toArray();
